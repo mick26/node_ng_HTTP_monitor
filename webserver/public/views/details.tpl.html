@@ -1,0 +1,187 @@
+<div class="details-page" ng-controller="DetailsCtrl">
+
+  <a style="float:right" href="/" class="btn btn-default">
+    <span class="glyphicon glyphicon-chevron-left"></span> back to list
+  </a>
+
+
+  <h2>
+    {{detailObj.hostName}}
+  </h2>
+
+
+  <h3>Service status</h3>
+
+
+  <!-- NEW ROW -->
+  <div class="section status row">
+  
+
+    <div class="col-md-4">
+      <h1 class="uptime">
+
+        <!--
+        if service is disabled - display disabled label 
+        -->
+        <div ng-if = "!detailObj.service.host.enabled">
+          <span title="Disabled" class="label label-default">Service disabled</span>
+        </div>
+              
+
+        <div ng-if = "detailObj.service.data && detailObj.service.data.uptime" >
+          <span title="Up time: {{detailObj.service.data.uptime}}" class="label label-{{detailObj.service.data.status}}" >
+            {{detailObj.service.data.uptime}}%
+          </span>          
+          <span class="small">uptime</span>
+        </div>
+
+        <div ng-if = "!detailObj.service.data && !detailObj.service.data.uptime" >
+          <span title="Offline" class="label label-danger">Offline</span>
+        </div>
+      </h1>
+
+      <div ng-if = "detailObj.service.data && detailObj.service.data.up_since" >
+        <span class="text-muted small">uptime (since last service failure): </span>
+        {{detailObj.service.data.up_since | timeAgo}}
+      </div>
+    
+    </div>
+
+
+
+    <div class="col-md-4">
+      <div ng-if = "detailObj.service.data && detailObj.service.data.avg_response_time" >  
+        <p>AVG. latency: 
+          <span title="AVG response time: {{detailObj.service.data.avg_response_time}} milliseconds" class="label label-default">
+          {{detailObj.service.data.avg_response_time}} </span> milliseconds
+        </p>
+      </div>
+    </div>
+
+
+    <div class="col-md-4">
+      <div ng-if = "detailObj.service.data && detailObj.service.data.outages">  
+        <p>Outages : 
+          <span title="outages: {{detailObj.service.data.outages}}" class="label label-danger">{{detailObj.service.data.outages}}</span>
+          
+          <div ng-if="detailObj.service.data && detailObj.service.data.last_outage">  
+            <span class="text-muted small">
+            - last one was {{detailObj.service.data.last_outage | timeAgo}}
+            </span>
+          </div>
+        </p>
+      </div>
+
+
+      <div ng-if="detailObj.service.data && detailObj.service.data.warnings">  
+        <p>Warnings : 
+          <span title="warnings: {{detailObj.service.data.warnings}}" class="label label-warning">{{detailObj.service.data.warnings}}</span>
+          <div ng-if="detailObj.service.data && detailObj.service.data.last_warning">  
+            <span class="text-muted small">
+            - last one was {{detailObj.service.data.last_warning | timeAgo}}
+            </span>
+          </div>
+        </p>
+      </div>
+    </div>
+  </div>  <!-- @END/ .row -->
+
+
+
+
+
+  <h3>Service configuration</h3>
+  <div class="section configuration row">
+    
+    <div class="col-md-4">
+      <p>
+        Host: 
+        <a target="_blank" href="{{detailObj.service.host.host}}:{{detailObj.service.host.port}}">
+          {{detailObj.service.host.host}} port {{detailObj.service.host.port}}
+        </a>
+      </p>
+
+      <p>
+      Ping interval: <em>{{detailObj.service.host.ping_interval}}</em> seconds
+      </p>
+
+      <div ng-if="detailObj.service.host.warning_if_takes_more_than">
+      <p>
+      Latency threshold: <span title="ping interval: {{detailObj.service.host.ping_interval}} seconds" class="label label-default">{{detailObj.service.host.warning_if_takes_more_than}}</span> milliseconds
+      </p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div ng-if="detailObj.service.expected">
+        <p>Expected response:</p>
+        <ul>
+
+        <div ng-if="detailObj.service.expected && detailObj.service.expected.statuscode">
+          <li>
+          Status code: <span title="ping interval: {{detailObj.service.expected.statuscode}} seconds" class="label label-default">
+          {{detailObj.service.expected.statuscode}}</span>
+          </li>
+        </div>
+
+        <div ng-if="detailObj.service.expected && detailObj.service.expected.contains">
+        <li>
+        Text in body: <em>{{detailObj.service.expected.contains}}</em>
+        </li>
+        </div>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+    </div>
+
+  </div>
+  
+
+
+  <!-- =======================================
+  Events Log
+  ========================================= -->
+  <h3>Events</h3>
+
+ 
+  <p>
+    Showing events from {{detailObj.eventsSince | date: 'dd/MM/yy, H:mm:ss'}} {{detailObj.eventsSince | timeAgo}}
+  </p>
+
+
+
+  <div class="section events row">
+
+    <!-- =======================================
+    Critical Events 
+    ========================================= -->
+    <div class="col-md-6">
+      <h4 class="text-center">Critical Events</h4>
+      <table class="events table table-striped table-condensed">
+        <tr ng-repeat="item in detailObj.critical_events track by $index">
+          <td><time class="timeago">{{item.timestamp | timeAgo}} <br/> {{item.timestamp | date: 'dd/MM/yy, H:mm:ss'}}</time></td>
+          <td><span class="{{item.status}}">{{item.msg}} </span></td>
+
+        </tr>
+      </table>
+    </div>
+
+    <!-- =======================================
+    Warning Events 
+    ========================================= -->
+    <div class="col-md-6"> 
+      <h4 class="text-center">Warning Events</h4>
+      <table class="events table table-striped table-condensed">
+        <tr ng-repeat="item in detailObj.warning_events track by $index">
+          <td><time class="timeago">{{item.timestamp | timeAgo}} <br/> {{item.timestamp | date: 'dd/MM/yy, H:mm:ss'}}</time></td>
+          <td><span class="{{item.status}}">{{item.msg}} </span></td>
+        </tr>
+      </table>
+    </div>
+
+  </div> <!-- @END /.row -->
+
+
+</div>

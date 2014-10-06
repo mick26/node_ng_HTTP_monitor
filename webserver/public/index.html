@@ -1,0 +1,55 @@
+<!-- 
+
+-->
+
+ <!DOCTYPE html>
+
+<html lang="en" ng-app="nmApp">
+
+  <head>
+    <meta charset = "utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>HTTP monitor for node.js</title>
+
+    <!-- CSS -->
+    <link rel='stylesheet' href='bower_components/bootstrap/dist/css/bootstrap.css' />
+    <link rel='stylesheet' href='css/style.css' />
+  </head>
+  
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="/">HTTP Service/Device Monitor</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <div id="status-overview"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+
+
+      <!-- this is where the views will be injected -->
+      <div ng-view></div>
+
+    <footer>
+    </footer>
+
+
+
+
+    <!-- JS -->
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
+    <script type="text/javascript" src="bower_components/angular-timeago/src/timeAgo.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/services/services.js"></script>
+    <script type="text/javascript" src="js/controllers/controllers.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,95 @@
+
+<!-- ==================================================
+Services Down
+=================================================== -->
+
+
+<div ng-if = "downCount" >
+  <span class="label label-danger down pull-right">{{downCount}} services down</span>
+</div>
+
+
+
+<!-- ==================================================
+Search
+=================================================== -->
+<div class="filter-container">
+  <span class="glyphicon glyphicon-search"></span>
+  <input class="form-control" type="text" id="filter" placeholder="filter by host name" ng-model="search"/>
+</div>
+
+
+
+<!-- ==================================================
+Table Header
+=================================================== -->
+<table class="table-services table sorted table-striped table-condensed">
+  <thead>
+    <th></th>
+    <th class="hidden-xs">ping</th>
+    <th>host</th>
+    <th class="hidden-xs"><span title="Average response time (milliseconds)">AVG res. (ms)</span></th>
+    <th class="hidden-xs">outages</th>
+    <th class="hidden-xs">last outage</th>
+    <th class="hidden-xs hidden-sm">warnings</th>
+    <th class="hidden-xs hidden-sm">last warning</th>
+    <th>uptime</th>
+  </thead>
+
+
+  <!-- ==================================================
+  Table Body
+  =================================================== -->  
+  <tbody>
+
+    <tr ng-repeat="item in dataArr | filter:search track by $index" >
+
+        <td><span class="label label-{{item.data.status}}">{{item.data.status}}</span>
+        </td>
+        <td class="hidden-xs">{{item.host.ping_service_name}}
+        </td>
+
+        <td class="hosturl"><a class="name" href ng-click="getTheDetails(item.name, item.host.name)">
+            {{item.host.name}}/{{item.name}}</a>
+        
+            <span class="hidden-xs last_check">last ping: {{item.data.last_check | date: 'dd/MM/yy, H:mm'}}
+            <time datetime=> {{item.data.last_check | timeAgo}}</time></span>
+        </td>
+        
+        <td><span class="label label-default">{{item.data.avg_response_time}}</span>
+        </td>
+        <td><span class="label label-danger">{{item.data.outages}}</span>
+        </td>
+
+        <td class="result-error hidden-xs"><div ng-if="item.data.last_outage">{{item.data.last_outage | date: 'dd/MM/yy @ H:mm:ss'}}<br/>
+            <time datetime=>{{item.data.last_outage | timeAgo}}</time></div>
+        </td>
+
+        <td class="result-warning hidden-xs hidden-sm"><span class="label label-warning">{{item.data.warnings}}</span>
+        </td>
+
+        <td class="result-warning hidden-xs hidden-sm"><div ng-if="item.data.last_warning">{{item.data.last_warning | date: 'dd/MM/yy @ H:mm:ss'}}<br/>
+            <time datetime>{{item.data.last_warning | timeAgo}}</time>
+            </div>
+        </td>
+
+
+        <td><a href ng-click="getTheDetails(item.name, item.host.name)">
+            {{item.data.uptime}}%</a>
+        </td>
+
+
+    
+<!--
+        Can also pass data to Node in querystring like: 
+        <td class="result-uptime"><a class="name" href="/#/details?service={{item.name}}&host={{item.host.name}}">
+            <span>{{item.data.uptime}}%</span></a>
+        </td>
+-->
+
+      </tr>
+
+  </tbody>
+
+</table>
+

@@ -1,0 +1,21 @@
+{
+  "name": "watchmen",
+  "version": "0.0.0",
+  "description": "A Node.js HTTP monitor",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Iván Loire <ivan@iloire.com> (http://iloire.com/)",
+  "license": "MIT",
+  "homepage": "http://letsnode.com",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/iloire/WatchMen.git"
+  },
+  "dependencies": {
+    "node-redis": "^0.1.7",
+    "redis": "^0.12.1"
+  }
+}
