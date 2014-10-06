@@ -1,11 +1,16 @@
-'use strict';
-
 /*
+Michael Cullen
+server.js
+
+Working - (Tá se ag obair)
+
 Ref.
 http://watchmen.letsnode.com/
 https://github.com/iloire/WatchMen
 https://www.npmjs.org/package/express-dynamic-helpers-patch
 */
+
+'use strict';
 
 
 /* ========================================================== 
@@ -19,31 +24,24 @@ var methodOverride = require('method-override');
 var errorHandler = require('errorhandler');
 var logger = require('morgan');
 var colours = require('colors');
-
 var dynamicHelpers = require('express-dynamic-helpers-patch')(app);
 
 
 /* ========================================================== 
 Internal Modules/Packages Required
 ============================================================ */
-//var watchmen = require('../lib/watchmen');
-//var storage_factory = require ('../lib/storage/storage_factory');
-
 var watchmen = require('../WatchMen/lib/watchmen.js');
 var storage_factory = require ('../watchmen/lib/storage/storage_factory.js');
-
+var routes = require('./server/routes.js');
 
 
 var storage = storage_factory.get_storage_instance();
 
-//var routes = require('./server/routes.js').add_routes(app, storage);
-var routes = require('./server/routes.js');
 
 /* ========================================================== 
 Port the server will listen on
 ============================================================ */
 app.set('port', process.env.PORT || 3000);
-//var port = parseInt(process.argv[2], 10) || 3000;
 
 
 /* ========================================================== 
@@ -75,12 +73,12 @@ app.use(express.static(__dirname + '/public'));
 
 //development only
 if (app.get('env') === 'development') {
- // app.use(errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(errorHandler({ dumpExceptions: true, showStack: true }));
 };
 
 //production only
 if (app.get('env') === 'production') {
- // app.use(errorHandler());
+  app.use(errorHandler());
 };
 
 
