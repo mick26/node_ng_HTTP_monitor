@@ -26,8 +26,8 @@ The services to be monitored are located in the file:
 
 The program comes in two separate parts. 
 
-1. The _watchmen_ part does all the heavy lifting. I did not alter this code except to change Redis to default port 6379. 
-	This code pings the HTTP(S) hosts to obtain connection status. Performs calculations to discern uptime, response time, warnings, avg. response time. Connects to and Redis DB and saves data there.
+1. The _watchmen_ part - does all the heavy lifting. I did not alter this code except to change Redis to default port 6379. 
+	This code pings the HTTP(S) hosts to obtain connection status. Performs calculations to discern uptime, response time, warnings, avg. response time etc. Connects to the Redis DB and saves data there.
 
 
 2. The _webserver_ part - Angular Client which performs regular $http polling to retrieve device status information and renders it on a browser.
